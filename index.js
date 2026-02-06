@@ -32,16 +32,22 @@ app.use(cookieParser())
 // CORS
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://client-lmtui.onrender.com"
-]
-
+  process.env.CLIENT_URL,
+];
 
 app.use(
   cors({
-    origin: true, // 👈 reflect request origin
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
 
 
 // routes
