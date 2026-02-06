@@ -126,27 +126,28 @@ export const getCourseCategories = async (req, res) => {
 
 
 
-export const getPublishedCourse = async (_, res) => {
+export const getPublishedCourse = async (req, res) => {
   try {
-    const courses = await Course.find({ isPublished: true }).populate({
-      path: "creator",
-      select: "name photoUrl",
-    });
-    if (!courses) {
-      return res.status(404).json({
-        message: "Course not found.",
-      });
-    }
+    const courses = await Course.find({ isPublished: true })
+      .populate({
+        path: "creator",
+        select: "name photoUrl",
+      })
+      .lean();
+
     return res.status(200).json({
-      courses,
+      success: true,
+      courses: courses || [],
     });
   } catch (error) {
-    console.log(error);
+    console.error("getPublishedCourse error:", error);
     return res.status(500).json({
-      message: "Failed to getpublished courses.",
+      success: false,
+      message: "Failed to fetch published courses",
     });
   }
 };
+
 
 export const editCourse = async (req, res) => {
   try {
