@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+/*import jwt from "jsonwebtoken";
 
 export const generateToken = (res, user, message) => {
   const token = jwt.sign(
@@ -29,7 +29,7 @@ export const generateToken = (res, user, message) => {
       message,
       user: userData,
     });
-};
+};*/
 
 
 /*import jwt from "jsonwebtoken";
@@ -63,7 +63,7 @@ export const generateToken = (res, user, message) => {
       message,
       user: userData,
     });
-};
+};*/
 
 
 export const generateToken = (res, user, message) => {
@@ -86,5 +86,5 @@ export const generateToken = (res, user, message) => {
       message,
       user,
     });
-};*/
+};
 
