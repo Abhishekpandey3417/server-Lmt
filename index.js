@@ -38,13 +38,25 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow non-browser requests
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error(`CORS policy: Origin ${origin} not allowed`));
+      // Allow non-browser tools (Postman, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Allow localhost for dev
+      if (origin === "http://localhost:5173") {
+        return callback(null, true);
+      }
+
+      // Allow any Render subdomain
+      if (origin.endsWith(".onrender.com")) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS not allowed"));
     },
     credentials: true
   })
 );
+
 
 // routes
 app.use("/api/v1/media", mediaRoute);
