@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
 const isAuthenticated = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies?.token;
 
   if (!token) {
     return res.status(401).json({
       success: false,
-      message: "Token missing",
+      message: "Authentication required",
     });
   }
 
@@ -14,14 +14,12 @@ const isAuthenticated = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.id = decoded.id;
     next();
-  } catch (err) {
+  } catch (error) {
     return res.status(401).json({
       success: false,
-      message: "Invalid token",
+      message: "Invalid or expired token",
     });
   }
 };
 
 export default isAuthenticated;
-
-
